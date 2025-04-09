@@ -1,11 +1,14 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import filedialog
 from src.views.base_view import BaseView
 from src.controllers.character_controller import CharacterController
 from src.models.character_model import CharacterModel
 import os
+import shutil
 
 class CharacterView(BaseView):
+    PICTURE_DIRECTORY = os.path.join(os.path.dirname(__file__), "..", "datas", "pictures")
     def __init__(self, master=None, controller=None):
         super().__init__(master, controller)
 
@@ -75,6 +78,10 @@ class CharacterView(BaseView):
         self.character_detail_image_entry = tk.Entry(self.character_detail_frame)
         self.character_detail_image_entry.grid(row=5, column=1, padx=10, pady=5)
         self.character_detail_image_entry.insert(0, self.character.image)
+
+        self.character_detail_import_image_button = tk.Button(self.character_detail_frame, text="Import Image", command=lambda: self.import_image())
+        self.character_detail_import_image_button.grid(row=5, column=2, padx=10, pady=5)
+
         
 
         
@@ -85,7 +92,15 @@ class CharacterView(BaseView):
         self.character_delete_button.pack(pady=10)
         self.character_save_button.bind("<Button-1>", lambda event: self.save_character(index = character_index))
         self.character_delete_button.bind("<Button-1>", lambda event: self.delete_character())
-        
+
+
+    def import_image(self):
+        file_path = filedialog.askopenfilename(title="Select an image file", filetypes=[("Image files", "*.png;*.jpg;*.jpeg")])
+        if file_path:
+            # Assuming you want to set the selected image path to the entry field
+            self.character_detail_image_entry.delete(0, tk.END)
+            self.character_detail_image_entry.insert(0, file_path)
+
     def save_character(self, index):
         print("Saving character...")
         # Get the updated character details from the entry fields
@@ -95,6 +110,17 @@ class CharacterView(BaseView):
         lineage = self.character_detail_lineage_entry.get()
         job = self.character_detail_job_entry.get()
         image = self.character_detail_image_entry.get()
+        os.makedirs(self.PICTURE_DIRECTORY, exist_ok=True)
+        # Copy the image to the PICTURE_DIRECTORY if it exists
+        file_name = os.path.basename(image)
+        destination = os.path.join(self.PICTURE_DIRECTORY, file_name)
+        if os.path.isfile(image):
+            shutil.copy(image, destination)
+            image = destination
+        else:
+            print(f"Image file {image} does not exist.")  
+
+
         
         # Update the character object with the new details
         self.character.first_name = first_name

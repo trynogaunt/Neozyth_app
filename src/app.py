@@ -7,6 +7,7 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
         self.geometry("800x600")
+        self.title("RP Manager")
         self.resizable(True, True)
         self.view = None
         self.controller = None
