@@ -2,7 +2,7 @@ import sqlite3
 
 class AbstractController:
     def __init__(self):
-        self.db_path = "src/datas/neozyth.db"
+        self.db_path = "src/datas/neozyth.sqlite"
         self.connection = None
         self.cursor = None
         self.connect()

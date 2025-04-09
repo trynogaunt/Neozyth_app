@@ -32,6 +32,45 @@ class CharacterView(BaseView):
         
         # Bind double-click event to open character details
         self.character_listbox.bind("<Double-Button-1>", lambda event: self.open_character_details())
+        self.character_add_button = tk.Button(self.frame, text="Add Character", command=lambda:self.add_character())
+        self.character_add_button.pack(pady=10)
+    
+    def add_character(self):
+        print("Adding character...")
+        # Create a new window for adding a character
+        self.character_add_window = tk.Toplevel(self)
+        self.character_add_window.title("Add Character")
+        self.character_add_window.geometry("400x300")
+        
+        # Create labels and entry fields for character details
+        tk.Label(self.character_add_window, text="First Name:").grid(row=0, column=0, padx=10, pady=5)
+        tk.Label(self.character_add_window, text="Last Name:").grid(row=1, column=0, padx=10, pady=5)
+        tk.Label(self.character_add_window, text="Age:").grid(row=2, column=0, padx=10, pady=5)
+        tk.Label(self.character_add_window, text="Lineage:").grid(row=3, column=0, padx=10, pady=5)
+        tk.Label(self.character_add_window, text="Job:").grid(row=4, column=0, padx=10, pady=5)
+        
+        self.first_name_entry = tk.Entry(self.character_add_window)
+        self.first_name_entry.grid(row=0, column=1, padx=10, pady=5)
+        
+        self.last_name_entry = tk.Entry(self.character_add_window)
+        self.last_name_entry.grid(row=1, column=1, padx=10, pady=5)
+        
+        self.age_entry = tk.Entry(self.character_add_window)
+        self.age_entry.grid(row=2, column=1, padx=10, pady=5)
+        
+        self.lineage_entry = tk.Entry(self.character_add_window)
+        self.lineage_entry.grid(row=3, column=1, padx=10, pady=5)
+        
+        self.job_entry = tk.Entry(self.character_add_window)
+        self.job_entry.grid(row=4, column=1, padx=10, pady=5)
+
+        
+        
+
+        
+        # Create buttons for saving and canceling the addition
+        self.save_button = tk.Button(self.character_add_window, text="Save", command=lambda:self.save_character())
+        self.save_button.grid(row=5, columnspan=2,pady=(20))
         
     def open_character_details(self):
         print("Opening character details...")

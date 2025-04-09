@@ -73,7 +73,7 @@ class CharacterController(AbstractController):
         - Exception: If there is an error during the creation process.
         """
         query = """
-            INSERT INTO characters (first_name, last_name, age, lineage, job, image, created_at, updated_at)
+            INSERT INTO character (first_name, last_name, age, lineage, job, image, created_at, updated_at)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """
         params = (character.first_name, character.last_name,character.age, character.lineage,
@@ -100,7 +100,7 @@ class CharacterController(AbstractController):
         try:
             self.execute_delete(query, params)
             # Check if the character was deleted successfully
-            check_query = "SELECT * FROM characters WHERE id = ?"
+            check_query = "SELECT * FROM character WHERE id = ?"
             result = self.execute_query(check_query, params)
             if not result:
                 print(f"Character with ID {character_id} deleted successfully.")
@@ -116,7 +116,7 @@ class CharacterController(AbstractController):
             return False
     
     def get_all(self, order_by: str = "id"):
-        """Get all characters from the database.
+        """Get all character from the database.
         ### Parameters
         - order_by (str): The column to order by. Default is "id". Accepts "id", "first_name", "last_name", "age", "lineage", "job".
         ### Returns
@@ -124,7 +124,7 @@ class CharacterController(AbstractController):
         ### Raises
         - ValueError: If the order_by parameter is not one of the accepted values.
         """
-        query = "SELECT * FROM characters"
+        query = "SELECT * FROM character"
         if order_by not in ["id", "first_name", "last_name", "age", "lineage", "job"]:
             raise ValueError("Invalid order_by parameter. Must be one of: id, first_name, last_name, age, lineage, job.")
         else:
@@ -141,7 +141,7 @@ class CharacterController(AbstractController):
         ### Raises
         - ValueError: If the character_id is not found in the database.
         """
-        query = "SELECT * FROM characters WHERE id = ?"
+        query = "SELECT * FROM character WHERE id = ?"
         params = (character_id,)
         result = self.execute_query(query, params)
         if result:
@@ -152,7 +152,7 @@ class CharacterController(AbstractController):
     def update(self, character: CharacterModel):
         """Update a character in the database."""
         query = """
-            UPDATE characters
+            UPDATE character
             SET first_name = ?, last_name = ?, age = ?, lineage = ?, job = ?, image = ?, updated_at = ?
             WHERE id = ?
         """
